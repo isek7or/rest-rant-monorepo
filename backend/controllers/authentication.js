@@ -15,7 +15,21 @@ router.post('/', async (req, res) => {
             message: `Could not find a user with the provided username and password`
         })
     } else {
+        req.body.userId = user.userId
         res.json({ user })
+    }
+})
+
+router.get('/profile', async (req, res) => {
+    console.log(req.session.userId)
+    try {
+        let user = await User.findOne({
+            where: { userId: req.session.userId }
+        })
+        res.json(user)
+    } catch (error) {
+        console.log(error)
+        res.json(null)
     }
 })
 
